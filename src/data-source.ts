@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { Shop } from './entity/Shop'
-// import { Customization } from './entity/Customization'
-// import { Translation } from './entity/Translation'
+import { Customization } from './entity/Customization'
+import { Translation } from './entity/Translation'
 import * as dotenv from 'dotenv'
 
 dotenv.config() // ← Load biến môi trường
@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [Shop],
+  entities: [Shop, Customization, Translation],
   synchronize: false,
   logging: true,
   migrations: ['src/migrations/*.ts'],
