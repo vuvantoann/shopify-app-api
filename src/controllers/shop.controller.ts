@@ -3,7 +3,6 @@ import { AppDataSource } from '../data-source'
 import { Shop } from '../entity/Shop'
 
 const shopRepository = AppDataSource.getRepository(Shop)
-
 export const createShop = async (req: Request, res: Response) => {
   try {
     const { shopify_domain, shop_owner } = req.body
@@ -16,7 +15,7 @@ export const createShop = async (req: Request, res: Response) => {
       })
     }
 
-    // 2. Check shop đã tồn tại chưa
+    // 2. Check tồn tại
     const shopExist = await shopRepository.findOne({
       where: { shopify_domain },
     })
@@ -28,7 +27,7 @@ export const createShop = async (req: Request, res: Response) => {
       })
     }
 
-    // 3. Tạo shop mới
+    // 3. Tạo shop
     const newShop = shopRepository.create({
       shopify_domain,
       shop_owner,
@@ -36,11 +35,11 @@ export const createShop = async (req: Request, res: Response) => {
 
     await shopRepository.save(newShop)
 
-    // 4. Response
+    // 4. Trả token = shopify_domain
     return res.status(201).json({
       code: 200,
       message: 'Đăng ký shop thành công',
-      shop: newShop,
+      token: shopify_domain,
     })
   } catch (error) {
     console.error('Create shop error:', error)
@@ -55,7 +54,6 @@ export const loginShop = async (req: Request, res: Response) => {
   try {
     const { shopify_domain } = req.body
 
-    // 1. Validate
     if (!shopify_domain) {
       return res.status(400).json({
         code: 400,
@@ -63,7 +61,6 @@ export const loginShop = async (req: Request, res: Response) => {
       })
     }
 
-    // 2. Tìm shop
     const shop = await shopRepository.findOne({
       where: { shopify_domain },
     })
@@ -75,19 +72,10 @@ export const loginShop = async (req: Request, res: Response) => {
       })
     }
 
-    // 4. Set cookie (đóng vai trò session)
-    res.cookie('shopify_domain', shop.shopify_domain, {
-      httpOnly: true,
-    })
-
     return res.json({
       code: 200,
       message: 'Đăng nhập shop thành công',
-      shop: {
-        id: shop.id,
-        shopify_domain: shop.shopify_domain,
-        shop_owner: shop.shop_owner,
-      },
+      token: shopify_domain,
     })
   } catch (error) {
     console.error('Login shop error:', error)
