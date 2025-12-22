@@ -85,12 +85,3 @@ export const loginShop = async (req: Request, res: Response) => {
     })
   }
 }
-
-export const getShops = async (_req: Request, res: Response) => {
-  try {
-    const shops = await shopRepository.find()
-    res.json(shops)
-  } catch (error) {
-    res.status(500).json({ message: 'Get shops failed', error })
-  }
-}
