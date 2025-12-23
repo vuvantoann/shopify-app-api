@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import { AuthRequest } from '../types/auth-request'
+
 import { AppDataSource } from '../data-source'
 import { Shop } from '../entity/Shop'
 
@@ -82,6 +84,37 @@ export const loginShop = async (req: Request, res: Response) => {
     return res.status(500).json({
       code: 500,
       message: 'Login shop failed',
+    })
+  }
+}
+
+export const getShopInfo = async (req: AuthRequest, res: Response) => {
+  try {
+    const shop = req.shop
+
+    if (!shop) {
+      return res.status(401).json({
+        code: 401,
+        message: 'Unauthorized',
+      })
+    }
+
+    return res.json({
+      code: 200,
+      message: 'Lấy thông tin shop thành công',
+      data: {
+        id: shop.id,
+        shopify_domain: shop.shopify_domain,
+        shop_owner: shop.shop_owner,
+        created_at: shop.created_at,
+        updated_at: shop.updated_at,
+      },
+    })
+  } catch (error) {
+    console.error('Get shop info error:', error)
+    return res.status(500).json({
+      code: 500,
+      message: 'Get shop info failed',
     })
   }
 }

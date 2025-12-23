@@ -4,10 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm'
-import { Shop } from './Shop'
 
 @Entity()
 export class Translation {
@@ -28,9 +25,4 @@ export class Translation {
 
   @UpdateDateColumn()
   updated_at: Date
-
-  // Quan hệ nhiều-1 với Shop
-  @ManyToOne(() => Shop, (shop) => shop.translations)
-  @JoinColumn({ name: 'shop_id' })
-  shop: Shop
 }

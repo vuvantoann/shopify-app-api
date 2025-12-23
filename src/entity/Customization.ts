@@ -4,16 +4,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
 } from 'typeorm'
-import { Shop } from './Shop'
 
 @Entity()
 export class Customization {
   @PrimaryGeneratedColumn()
   id: number
 
+  // 🔥 sửa typo + lưu trực tiếp
   @Column({ type: 'int', unique: true })
   shop_id: number
 
@@ -67,9 +65,4 @@ export class Customization {
 
   @UpdateDateColumn()
   updated_at: Date
-
-  // Quan hệ 1-1 với Shop
-  @OneToOne(() => Shop, (shop) => shop.customization)
-  @JoinColumn({ name: 'shop_id' })
-  shop: Shop
 }

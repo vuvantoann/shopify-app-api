@@ -13,5 +13,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-  }
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "baseUrl": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
